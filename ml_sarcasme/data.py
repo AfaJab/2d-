@@ -1,20 +1,48 @@
 import pandas as pd
 
-from google.cloud import bigquery
 from colorama import Fore, Style
 from pathlib import Path
 
-from taxifare.params import *
+from tensorflow import keras
+from keras.preprocessing.text import Tokenizer
+from keras.preprocessing.sequence import pad_sequences
 
-def clean_data(df: pd.DataFrame) -> pd.DataFrame:
+from params import *
+
+def load_data(path = "raw_data/train-balanced-sarcasm.csv"):
+    return pd.read_csv(path)
+
+def clean_data(df: pd.DataFrame
+               ,subset = True) -> pd.DataFrame:
     df = df.drop_duplicates()
     df = df.dropna(how='any', axis=0)
+    if subset : return df.sample(n=50000,random_state=42)
     return df
+
+def tokenize_data(df:pd.DataFrame):
+
+    X = df[['comment']]
+    y = df['label']
+
+    X = X.squeeze()
+    tokenizer = Tokenizer()
+
+    tokenizer.fit_on_texts(X)
+
+    sequences = tokenizer.texts_to_sequences(X)
+
+    X = pad_sequences(sequences, maxlen=150)
+
+    vocab_size = len(tokenizer.word_index) + 1
+
+    return X,y,vocab_size
+
+
 
 def get_data_with_cache(
         gcp_project:str,
         query:str,
-        cache_path:Path,
+        cache_path:Path = "raw_data/train-balanced-sarcasm.csv",
         data_has_header=True
     ) -> pd.DataFrame:
     """
@@ -39,38 +67,6 @@ def get_data_with_cache(
 
     return df
 
-def load_data_to_bq(
-        data: pd.DataFrame,
-        gcp_project:str,
-        bq_dataset:str,
-        table: str,
-        truncate: bool
-    ) -> None:
-    """
-    - Save the DataFrame to BigQuery
-    - Empty the table beforehand if `truncate` is True, append otherwise
-    """
-
-    assert isinstance(data, pd.DataFrame)
-    full_table_name = f"{gcp_project}.{bq_dataset}.{table}"
-    print(Fore.BLUE + f"\nSave data to BigQuery @ {full_table_name}...:" + Style.RESET_ALL)
-
-    # Load data onto full_table_name
-
-    # 🎯 HINT for "*** TypeError: expected bytes, int found":
-    # After preprocessing the data, your original column names are gone (print it to check),
-    # so ensure that your column names are *strings* that start with either
-    # a *letter* or an *underscore*, as BQ does not accept anything else
-
-    # TODO: simplify this solution if possible, but students may very well choose another way to do it
-    # We don't test directly against their own BQ tables, but only the result of their query
-    data.columns = [f"_{column}" if not str(column)[0].isalpha() and not str(column)[0] == "_" else str(column) for column in data.columns]
-
-    client = bigquery.Client()
-
-    # Define write mode and schema
-    write_mode = "WRITE_TRUNCATE" if truncate else "WRITE_APPEND"
-    job_config = bigquery.LoadJobConfig(write_disposition=write_mode)
 
     print(f"\n{'Write' if truncate else 'Append'} {full_table_name} ({data.shape[0]} rows)")
 

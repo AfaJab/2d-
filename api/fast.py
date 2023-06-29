@@ -16,7 +16,7 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-app.state.model = load_model()
+app.state.model = load_model("baseline")
 
 @app.get("/predict")
 def predict(sentence: str):
