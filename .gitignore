@@ -8,7 +8,7 @@ __pycache__/
 *.so
 
 #GCP
-gcp
+gcp/
 
 # Distribution / packaging
 .Python
