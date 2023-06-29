@@ -22,7 +22,7 @@ app.state.model = load_model()
 def predict(sentence: str):
 
     X_processed = preprocess_text(sentence)
-    y_pred = model.predict(X_processed)
+    y_pred = app.state.model.predict(X_processed)
 
     return y_pred
 
