@@ -13,7 +13,7 @@ from keras.callbacks import EarlyStopping
 from keras.layers import Embedding, GRU, Dense, Dropout
 from keras.metrics import Precision, Recall
 from keras.optimizers import Adam
-from keras.preprocessing.sequence import pad_sequences
+# from keras.preprocessing.sequence import pad_sequences
 
 end = time.perf_counter()
 print(f"\n✅ TensorFlow loaded ({round(end - start, 2)}s)")

@@ -5,7 +5,7 @@ from pathlib import Path
 
 from tensorflow import keras
 from keras.preprocessing.text import Tokenizer
-from keras.preprocessing.sequence import pad_sequences
+from keras_preprocessing.sequence import pad_sequences
 
 from sarcasme.params import *
 
