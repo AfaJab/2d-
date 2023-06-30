@@ -1,5 +1,5 @@
 import time
-from ml_sarcasme.data import clean_data
+from sarcasme.ml_sarcasme.data import clean_data
 from sklearn.model_selection import train_test_split
 from colorama import Fore, Style
 

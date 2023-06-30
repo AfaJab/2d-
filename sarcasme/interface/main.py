@@ -1,6 +1,6 @@
-from ml_sarcasme.data import clean_data,tokenize_data,load_data
-from ml_sarcasme.model import initialize_model,fit_model
-from ml_sarcasme.registry import save_model,load_model
+from sarcasme.ml_sarcasme.data import clean_data,tokenize_data,load_data
+from sarcasme.ml_sarcasme.model import initialize_model,fit_model
+from sarcasme.ml_sarcasme.registry import save_model
 
 
 def train():

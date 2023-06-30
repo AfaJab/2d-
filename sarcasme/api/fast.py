@@ -1,6 +1,6 @@
 import pandas as pd
-from ml_sarcasme.preprocess import preprocess_text
-from ml_sarcasme.registry import load_model
+from sarcasme.ml_sarcasme.preprocess import preprocess_text
+from sarcasme.ml_sarcasme.registry import load_model
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
