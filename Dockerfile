@@ -32,6 +32,7 @@ RUN pip install -U pip
 RUN pip install -r requirements.txt
 
 COPY sarcasme sarcasme
+COPY models models
 COPY setup.py setup.py
 RUN pip install .
 
