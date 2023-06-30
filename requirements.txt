@@ -1,34 +1,43 @@
+
 wheel
+# Tests & utils
 nbresult
 colorama
 ipdb
-ipykernel
 yapf
-matplotlib
-pygeohash
 pytest
+# Data Vis
+matplotlib
 seaborn
+# Data Science
 numpy==1.23.5
 pandas==1.5.3
+nltk
 scipy==1.10.0
 scikit-learn==1.2.1
+# GCP
 google-cloud-bigquery
 google-cloud-storage
 db-dtypes
+# ?????
+pygeohash
 pyarrow
+psycopg2-binary
 # Trick to install the version of Tensorflow depending on your processor: darwin == Mac, ARM == M1
-tensorflow-macos==2.10.0; sys_platform == 'darwin' and 'ARM' in platform_version # Mac M-chips
-tensorflow==2.10.0; sys_platform == 'darwin' and 'ARM' not in platform_version # Mac Intel chips
-tensorflow==2.10.0; sys_platform != 'darwin' # Windows & Ubuntu Intel chips
-
-# prevent bq 3+ db-dtypes package error when running training from bq
-
+grpcio==1.50.0
+tensorflow-macos==2.12.0; sys_platform == 'darwin' and 'ARM' in platform_version # Mac M-chips
+tensorflow==2.12.0; sys_platform == 'darwin' and 'ARM' not in platform_version # Mac Intel chips
+tensorflow==2.12.0; sys_platform != 'darwin' # Windows & Ubuntu Intel chips
+# API
+uvicorn
+fastapi
 mlflow==2.1.1
-
+# ENV
 python-dotenv
 prefect==2.8.1
-psycopg2-binary
-
+# Jupyter notebook
+ipykernel
+notebook
 # jupyter-contrib-core==0.4.0
 # jupyter-contrib-nbextensions==0.5.1
 # jupyter-highlight-selected-word==0.2.0

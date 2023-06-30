@@ -1,6 +1,7 @@
 import pandas as pd
-from ml_sarcasme.preprocess import preprocess_text
-from ml_sarcasme.registry import load_model
+from sarcasme.ml_sarcasme.preprocess import preprocess_text
+from sarcasme.ml_sarcasme.registry import load_model
+from sarcasme.ml_sarcasme.data import tokenize_data
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -16,14 +17,15 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-app.state.model = load_model()
+app.state.model = load_model("baseline")
 
 @app.get("/predict")
 def predict(sentence: str):
-
+    model = app.state.model
     X_processed = preprocess_text(sentence)
-    y_pred = app.state.model.predict(X_processed)
-
+    df= pd.DataFrame({'comment':[X_processed], 'label':[0]})
+    X,y,vocab_size = tokenize_data(df)
+    y_pred = float(model.predict(X)[0][0])
     return y_pred
 
 

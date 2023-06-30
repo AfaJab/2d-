@@ -9,3 +9,8 @@ install_requirements :
 # TESTS
 test_gcp :
 	python test/test_bq_access.py
+
+
+#API
+run_api:
+	uvicorn sarcasme.api.fast:app --reload
