@@ -5,9 +5,10 @@
 colorama
 numpy==1.23.5
 pandas==1.5.3
+nltk
 pygeohash
 scikit-learn==1.2.1
-tensorflow==2.10.0
+# tensorflow==2.12.0
 google-cloud-bigquery
 google-cloud-storage
 pyarrow
