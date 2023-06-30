@@ -46,6 +46,15 @@ def fit_model(model
               ,y_train
               ,patience=3
               ,verbose=1):
+    '''
+    Fit the model with the training data
+    params:
+    - model : the model to fit
+    - X_train : the training data
+    - y_train : the training labels
+    - patience : the number of epochs to wait before early stopping
+    - verbose : the verbosity level
+    '''
     early_stopping = EarlyStopping(monitor='val_loss', patience=patience,restore_best_weights=True)
     history = model.fit(X_train, y_train,
                         batch_size = 32,epochs=1,

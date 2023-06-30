@@ -7,19 +7,27 @@ from tensorflow import keras
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 
-from params import *
+from sarcasme.params import *
+
+
 
 def load_data(path = "raw_data/train-balanced-sarcasm.csv"):
     return pd.read_csv(path)
 
 def clean_data(df: pd.DataFrame
                ,subset = True) -> pd.DataFrame:
+    '''
+    Clean the data by removing duplicates and empty values
+    '''
     df = df.drop_duplicates()
     df = df.dropna(how='any', axis=0)
     if subset : return df.sample(n=50000,random_state=42)
     return df
 
 def tokenize_data(df:pd.DataFrame):
+    '''
+    Tokenize the data and return the X,y and vocab_size
+    '''
 
     X = df[['comment']]
     y = df['label']
