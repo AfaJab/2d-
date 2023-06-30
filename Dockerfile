@@ -28,6 +28,7 @@ WORKDIR /prod
 
 # We strip the requirements from useless packages like `ipykernel`, `matplotlib` etc...
 COPY requirements_prod.txt requirements.txt
+RUN pip install -U pip
 RUN pip install -r requirements.txt
 
 COPY sarcasme sarcasme
