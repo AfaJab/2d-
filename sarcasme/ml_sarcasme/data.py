@@ -6,7 +6,6 @@ from pathlib import Path
 from tensorflow import keras
 from keras.preprocessing.text import Tokenizer
 from keras.utils import pad_sequences
-
 from sarcasme.params import *
 from sarcasme.ml_sarcasme.registry import save_tokenizer,load_tokenizer
 
@@ -25,7 +24,9 @@ def clean_data(df: pd.DataFrame
     if subset : return df.sample(n=50000,random_state=42)
     return df
 
-def tokenize_data(df:pd.DataFrame,tokenizer=None):
+def tokenize_data(df:pd.DataFrame
+                  ,tokenizer=None
+                  ,oov_token=None):
     '''
     Tokenize the data and return the X,y and vocab_size
 
@@ -36,11 +37,12 @@ def tokenize_data(df:pd.DataFrame,tokenizer=None):
 
     X = X.squeeze()
     if not tokenizer:
-        tokenizer = Tokenizer()
+        tokenizer = Tokenizer(oov_token=-1)
         tokenizer.fit_on_texts(X)
         save_tokenizer(tokenizer)
 
-    sequences = tokenizer.texts_to_sequences(X)
+    sequences = tokenizer.texts_to_sequences(X
+                                             )
     X = pad_sequences(sequences, maxlen=150)
     vocab_size = len(tokenizer.word_index) + 1
 
