@@ -8,6 +8,7 @@ from keras.preprocessing.text import Tokenizer
 from keras.utils import pad_sequences
 
 from sarcasme.params import *
+from sarcasme.ml_sarcasme.registry import save_tokenizer,load_tokenizer
 
 
 
@@ -24,23 +25,23 @@ def clean_data(df: pd.DataFrame
     if subset : return df.sample(n=50000,random_state=42)
     return df
 
-def tokenize_data(df:pd.DataFrame):
+def tokenize_data(df:pd.DataFrame,tokenizer=None):
     '''
     Tokenize the data and return the X,y and vocab_size
+
     '''
 
     X = df[['comment']]
     y = df['label']
 
     X = X.squeeze()
-    tokenizer = Tokenizer()
-
-    tokenizer.fit_on_texts(X)
+    if not tokenizer:
+        tokenizer = Tokenizer()
+        tokenizer.fit_on_texts(X)
+        save_tokenizer(tokenizer)
 
     sequences = tokenizer.texts_to_sequences(X)
-
     X = pad_sequences(sequences, maxlen=150)
-
     vocab_size = len(tokenizer.word_index) + 1
 
     return X,y,vocab_size
