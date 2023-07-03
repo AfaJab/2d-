@@ -21,9 +21,6 @@
 
 # tensorflow base-images are optimized: lighter than python-buster + pip install tensorflow
 FROM tensorflow/tensorflow:latest
-# OR for apple silicon, use this base image instead
-# FROM armswdev/tensorflow-arm-neoverse:r22.09-tf-2.10.0-eigen
-
 WORKDIR /prod
 
 # We strip the requirements from useless packages like `ipykernel`, `matplotlib` etc...
@@ -32,6 +29,7 @@ RUN pip install -U pip
 RUN pip install -r requirements.txt
 
 COPY sarcasme sarcasme
+COPY models models
 COPY setup.py setup.py
 RUN pip install .
 
