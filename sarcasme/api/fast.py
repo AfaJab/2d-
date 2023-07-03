@@ -1,6 +1,6 @@
 import pandas as pd
 from sarcasme.ml_sarcasme.preprocess import preprocess_text
-from sarcasme.ml_sarcasme.registry import load_model
+from sarcasme.ml_sarcasme.registry import load_model,load_tokenizer
 from sarcasme.ml_sarcasme.data import tokenize_data
 
 from fastapi import FastAPI
@@ -18,13 +18,15 @@ app.add_middleware(
 )
 
 app.state.model = load_model("baseline")
+app.state.tokenizer = load_tokenizer("tokenizer")
 
 @app.get("/predict")
 def predict(sentence: str):
     model = app.state.model
     X_processed = preprocess_text(sentence)
     df= pd.DataFrame({'comment':[X_processed], 'label':[0]})
-    X,y,vocab_size = tokenize_data(df)
+    X,y,vocab_size = tokenize_data(df
+                                   ,tokenizer=app.state.tokenizer)
     y_pred = float(model.predict(X)[0][0])
     return y_pred
 
