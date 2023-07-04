@@ -2,11 +2,10 @@ import pandas as pd
 
 from colorama import Fore, Style
 from pathlib import Path
-
+from google.cloud import bigquery
 from tensorflow import keras
 from keras.preprocessing.text import Tokenizer
 from keras.utils import pad_sequences
-
 from sarcasme.params import *
 from sarcasme.ml_sarcasme.registry import save_tokenizer,load_tokenizer
 

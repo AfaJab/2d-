@@ -6,10 +6,21 @@ install_requirements :
 	pip install -U pip wheel
 	pip install -r requirements.txt
 
+reset_models_logs :
+	rm -rf models/*
+	mkdir -p models
+
+reset_data :
+	rm -rf data/*
+	mkdir -p data
+
+# VM
+copy_code:
+	gcloud compute scp --recurse ../ $(USER)@$(INSTANCE):~/sarcasme
+
 # TESTS
 test_gcp :
 	python test/test_bq_access.py
-
 
 #API
 run_api:
