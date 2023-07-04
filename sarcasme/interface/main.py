@@ -26,6 +26,7 @@ def train_bert_model():
     X_train, X_test, y_train, y_test = train_test_split(X_processed, y, test_size=0.01, shuffle=True)
     model = initialize_bert_model()
     history, model = fit_model(model, X_train, y_train)
+    model.evaluate(X_test,y_test)
     save_model(model, "minibert")
 
 if __name__=="__main__":
