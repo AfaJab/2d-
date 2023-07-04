@@ -1,7 +1,10 @@
 import time
-from sarcasme.ml_sarcasme.data import clean_data
 from sklearn.model_selection import train_test_split
 from colorama import Fore, Style
+import tensorflow_hub as hub
+import tensorflow_text as text
+import tensorflow as tf
+from sarcasme.ml_sarcasme.data import clean_data
 
 # Timing the TF import
 print(Fore.BLUE + "\nLoading TensorFlow..." + Style.RESET_ALL)
@@ -40,6 +43,25 @@ def initialize_model(vocab_size) -> Model:
 
     return model
 
+def initialize_bert_model():
+    text_input = tf.keras.layers.Input(shape=(), dtype=tf.string)
+    preprocessor = hub.KerasLayer(
+        "https://tfhub.dev/tensorflow/bert_en_uncased_preprocess/3")
+    encoder_inputs = preprocessor(text_input)
+    encoder = hub.KerasLayer(
+        "https://tfhub.dev/tensorflow/small_bert/bert_en_uncased_L-2_H-128_A-2/2",
+        trainable=True)
+    outputs = encoder(encoder_inputs)
+    X_ = outputs["pooled_output"]
+
+    #nn= tf.keras.layers.Dense(320 , activation='relu')(X_)
+    nn = tf.keras.layers.Dropout(0.3, name="dropout")(X_)
+    nn = tf.keras.layers.Dense(1, activation='sigmoid', name="output")(nn)
+
+    model = tf.keras.Model(text_input, nn)
+    model.compile(optimizer=keras.optimizers.Adam(learning_rate=0.0001), loss='binary_crossentropy',metrics=['accuracy', 'Precision', 'Recall'])
+    return model
+
 
 def fit_model(model
               ,X_train
@@ -57,7 +79,7 @@ def fit_model(model
     '''
     early_stopping = EarlyStopping(monitor='val_loss', patience=patience,restore_best_weights=True)
     history = model.fit(X_train, y_train,
-                        batch_size = 32,epochs=1,
+                        batch_size = 32,epochs=50,
                         validation_split=0.2,
                         callbacks=[early_stopping]
                         ,verbose=verbose)
