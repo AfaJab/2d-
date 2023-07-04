@@ -5,6 +5,7 @@ from sarcasme.ml_sarcasme.registry import save_model
 from sarcasme.ml_sarcasme.preprocess import preprocess
 
 from sklearn.model_selection import train_test_split
+import json
 
 def train():
     '''
@@ -19,15 +20,21 @@ def train():
 
 def train_bert_model():
     df = load_data()
-    df = clean_data(df)
+    df = clean_data(df, subset = False)
+    df = df.iloc[:2000, :]
     X = df[['comment']]
     y = df['label']
+    print(df.shape)
     X_processed = X.applymap(preprocess)
     X_train, X_test, y_train, y_test = train_test_split(X_processed, y, test_size=0.01, shuffle=True)
     model = initialize_bert_model()
     history, model = fit_model(model, X_train, y_train)
-    model.evaluate(X_test,y_test)
     save_model(model, "minibert")
+    res = model.evaluate(X_test,y_test)
+    res_json = json.dump(dict(loss=res[0], Accuracy=res[1], Precision=res[2], Recall=res[3]))
+    with open("models/res.json", "w") as file:
+        file.write(res_json)
+
 
 if __name__=="__main__":
     train_bert_model()
