@@ -21,7 +21,7 @@ def train():
 def train_bert_model():
     df = load_data()
     df = clean_data(df, subset = False)
-    df = df.iloc[:2000, :]
+    df = df
     X = df[['comment']]
     y = df['label']
     print(df.shape)

@@ -79,7 +79,7 @@ def fit_model(model
     '''
     early_stopping = EarlyStopping(monitor='val_loss', patience=patience,restore_best_weights=True)
     history = model.fit(X_train, y_train,
-                        batch_size = 32,epochs=1,
+                        batch_size = 32,epochs=50,
                         validation_split=0.2,
                         callbacks=[early_stopping]
                         ,verbose=verbose)
