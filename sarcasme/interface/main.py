@@ -19,7 +19,7 @@ def train():
 
 def train_bert_model():
     df = load_data()
-    df = clean_data(df).iloc[:2000,:]
+    df = clean_data(df)
     X = df[['comment']]
     y = df['label']
     X_processed = X.applymap(preprocess)
