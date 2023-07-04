@@ -54,7 +54,7 @@ def initialize_bert_model():
     outputs = encoder(encoder_inputs)
     X_ = outputs["pooled_output"]
 
-    #nn= tf.keras.layers.Dense(320 , activation='relu')(X_)
+    nn = tf.keras.layers.Dense(320 , activation='relu')(X_)
     nn = tf.keras.layers.Dropout(0.3, name="dropout")(X_)
     nn = tf.keras.layers.Dense(1, activation='sigmoid', name="output")(nn)
 
@@ -79,7 +79,7 @@ def fit_model(model
     '''
     early_stopping = EarlyStopping(monitor='val_loss', patience=patience,restore_best_weights=True)
     history = model.fit(X_train, y_train,
-                        batch_size = 32,epochs=1,
+                        batch_size = 32,epochs=100,
                         validation_split=0.2,
                         callbacks=[early_stopping]
                         ,verbose=verbose)

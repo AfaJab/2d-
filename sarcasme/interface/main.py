@@ -1,3 +1,4 @@
+import pickle
 from sarcasme.ml_sarcasme.data import clean_data,tokenize_data,load_data
 from sarcasme.ml_sarcasme.model import initialize_model,fit_model
 from sarcasme.ml_sarcasme.model import initialize_bert_model
@@ -19,7 +20,7 @@ def train():
 
 def train_bert_model():
     df = load_data()
-    df = clean_data(df,subset=True).iloc[:1000]
+    df = clean_data(df,subset=False)
     X = df[['comment']]
     y = df['label']
     X_processed = X.applymap(preprocess)

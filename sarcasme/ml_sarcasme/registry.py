@@ -89,7 +89,6 @@ def load_weights(model: keras.Model,
     return model
 
 
-
 def load_tokenizer(tokenizer_name="tokenizer"):
     with open(f'models/{tokenizer_name}.pickle', 'rb') as handle:
         tokenizer = pickle.load(handle)
