@@ -49,13 +49,13 @@ def initialize_bert_model():
         "https://tfhub.dev/tensorflow/bert_en_uncased_preprocess/3")
     encoder_inputs = preprocessor(text_input)
     encoder = hub.KerasLayer(
-        "https://tfhub.dev/tensorflow/small_bert/bert_en_uncased_L-2_H-128_A-2/2",
+        "https://tfhub.dev/tensorflow/small_bert/bert_en_uncased_L-4_H-512_A-8/2",
         trainable=True)
     outputs = encoder(encoder_inputs)
     X_ = outputs["pooled_output"]
 
     #nn= tf.keras.layers.Dense(320 , activation='relu')(X_)
-    nn = tf.keras.layers.Dropout(0.3, name="dropout")(X_)
+    nn = tf.keras.layers.Dropout(0.4, name="dropout")(X_)
     nn = tf.keras.layers.Dense(1, activation='sigmoid', name="output")(nn)
 
     model = tf.keras.Model(text_input, nn)
