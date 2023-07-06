@@ -1,5 +1,4 @@
 import time
-from sklearn.model_selection import train_test_split
 from colorama import Fore, Style
 import tensorflow_hub as hub
 import tensorflow_text as text
