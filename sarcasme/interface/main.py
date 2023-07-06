@@ -29,9 +29,10 @@ def train_bert_model():
     X_train, X_test, y_train, y_test = train_test_split(X_processed, y, test_size=0.01, shuffle=True)
     model = initialize_bert_model()
     history, model = fit_model(model, X_train, y_train)
-    save_model(model, "minibert")
+    save_model(model, "mediumbert")
     res = model.evaluate(X_test,y_test)
-    res_json = json.dump(dict(loss=res[0], Accuracy=res[1], Precision=res[2], Recall=res[3]))
+    print(res)
+    res_json = json.dumps(dict(loss=res[0], Accuracy=res[1], Precision=res[2], Recall=res[3]))
     with open("models/res.json", "w") as file:
         file.write(res_json)
 
