@@ -1,8 +1,8 @@
 import pandas as pd
 from sarcasme.ml_sarcasme.preprocess import preprocess
-# from sarcasme.ml_sarcasme.registry import load_model,load_tokenizer
+from sarcasme.ml_sarcasme.registry import load_weights
 # from sarcasme.ml_sarcasme.data import tokenize_data
-from sarcasme.ml_sarcasme.model import initialize_bert_model
+from sarcasme.ml_sarcasme.model import initialize_minibert_model
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -17,9 +17,8 @@ app.add_middleware(
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
 )
-
-app.state.model = initialize_bert_model()
-app.state.model.load_weights('models/minibert_final.h5')
+if not "model" in app.state :
+    app.state.model = load_weights(initialize_minibert_model(),"minibert_final")
 # app.state.tokenizer = load_tokenizer("tokenizer")
 
 @app.get("/predict")
@@ -36,5 +35,4 @@ def predict(sentence: str):
 
 @app.get("/")
 def root():
-
     return dict(greeting="Hello")

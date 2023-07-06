@@ -43,7 +43,7 @@ def initialize_model(vocab_size) -> Model:
 
     return model
 
-def initialize_bert_model():
+def initialize_mediumbert_model():
     text_input = tf.keras.layers.Input(shape=(), dtype=tf.string)
     preprocessor = hub.KerasLayer(
         "https://tfhub.dev/tensorflow/bert_en_uncased_preprocess/3")
@@ -56,6 +56,25 @@ def initialize_bert_model():
 
     #nn= tf.keras.layers.Dense(320 , activation='relu')(X_)
     nn = tf.keras.layers.Dropout(0.4, name="dropout")(X_)
+    nn = tf.keras.layers.Dense(1, activation='sigmoid', name="output")(nn)
+
+    model = tf.keras.Model(text_input, nn)
+    model.compile(optimizer=keras.optimizers.Adam(learning_rate=0.0001), loss='binary_crossentropy',metrics=['accuracy', 'Precision', 'Recall'])
+    return model
+
+def initialize_minibert_model():
+    text_input = tf.keras.layers.Input(shape=(), dtype=tf.string)
+    preprocessor = hub.KerasLayer(
+        "https://tfhub.dev/tensorflow/bert_en_uncased_preprocess/3")
+    encoder_inputs = preprocessor(text_input)
+    encoder = hub.KerasLayer(
+        "https://tfhub.dev/tensorflow/small_bert/bert_en_uncased_L-2_H-128_A-2/2",
+        trainable=True)
+    outputs = encoder(encoder_inputs)
+    X_ = outputs["pooled_output"]
+
+    #nn = tf.keras.layers.Dense(320 , activation='relu')(X_)
+    nn = tf.keras.layers.Dropout(0.3, name="dropout")(X_)
     nn = tf.keras.layers.Dense(1, activation='sigmoid', name="output")(nn)
 
     model = tf.keras.Model(text_input, nn)
